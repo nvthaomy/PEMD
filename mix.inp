@@ -1,0 +1,23 @@
+tolerance 2.0
+filetype pdb
+output 3400opc_3400nacl.pdb
+add_amber_ter
+
+structure na.pdb
+        number 3400
+        resnumbers 2
+        inside box 5 5 5 55 55 55
+end structure
+
+structure cl.pdb
+        number 3400
+        resnumbers 2
+        inside box 5 5 5 55 55 55
+end structure
+
+structure opc.pdb
+        number 3400
+        resnumbers 2
+        inside box 2 2 2 58 58 58
+end structure
+

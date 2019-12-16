@@ -1,0 +1,15 @@
+#!/bin/bash
+#SBATCH -N 1 --partition=gpu --ntasks-per-node=1
+#SBATCH --gres=gpu:1
+#SBATCH -J A12f05w013298K
+#SBATCH --mail-type=FAIL
+#SBATCH --mail-type=END
+#SBATCH --mail-user=my@ucsb.edu
+
+
+cd $SLURM_SUBMIT_DIR
+
+/bin/hostname
+srun --gres=gpu:1 /usr/bin/nvidia-smi
+export PATH="/home/mnguyen/anaconda3/bin:$PATH"
+python sim.py
