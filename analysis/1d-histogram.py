@@ -31,13 +31,14 @@ parser.add_argument('-Lx',type=float, default=10, help="Lx, default 10")
 parser.add_argument('-Ly',type=float, default=10, help="Ly, default 10")
 parser.add_argument('-Lz',type=float, default=10, help="Lz, default 10")
 parser.add_argument('-nbins',type=int, default=100, help="Number of bins")
+parser.add_argument('-com',action='store_true', help="substract median value of position in each frame")
 args = parser.parse_args()
 
 ax = args.axis
 coordfile = args.coordfile
 topfile = args.topfile
 anames = args.atoms
-
+com = args.com
 print("... Loading Trajectory ...")
 traj = mdtraj.load(coordfile,top=topfile)
 top = traj.topology
@@ -54,8 +55,9 @@ L = box[ax]
 A = np.prod(box)/L
 
 xs = traj.xyz[:,:,ax]
-xmedian = np.median(xs,1)
-xs = xs - xmedian[:,None]
+if com:
+    xmedian = np.median(xs,1)
+    xs = xs - xmedian[:,None]
 xs = np.ravel(xs)
 dx = L/nbins
 xs = np.mod(xs,L) #wrap pbc
@@ -83,8 +85,9 @@ if anames:
     NtotMasked = traj.xyz.shape[1]
 
     xs = traj.xyz[:,:,ax]
-    xmedian = np.median(xs,1)
-    xs = xs - xmedian[:,None]
+    if com:
+        xmedian = np.median(xs,1)
+        xs = xs - xmedian[:,None]
     xs = np.ravel(xs)
     xs = np.mod(xs,L) #wrap pbc
 
