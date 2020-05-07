@@ -1,0 +1,29 @@
+-I: Adding /home/mnguyen/miniconda3/dat/leap/prep to search path.
+-I: Adding /home/mnguyen/miniconda3/dat/leap/lib to search path.
+-I: Adding /home/mnguyen/miniconda3/dat/leap/parm to search path.
+-I: Adding /home/mnguyen/miniconda3/dat/leap/cmd to search path.
+-s: Ignoring startup file: leaprc
+-f: Source build_AA10.in.
+
+Welcome to LEaP!
+Sourcing: ./build_AA10.in
+----- Source: /home/mnguyen/miniconda3/dat/leap/cmd/leaprc.gaff2
+----- Source of /home/mnguyen/miniconda3/dat/leap/cmd/leaprc.gaff2 done
+Log file: ./leap.log
+Loading parameters: /home/mnguyen/miniconda3/dat/leap/parm/gaff2.dat
+Reading title:
+AMBER General Force Field for organic molecules (Version 2.11, May 2016)
+Loading library: ./PAAP9N9c5.lib
+Loading library: ./PAAD9N9c4.lib
+Loading PDB file: ./AA_prot1.pdb
+  total atoms in file: 9
+Loading PDB file: ./AA_deprot1.pdb
+  total atoms in file: 8
+Loading PDB file: ./AA_prot2.pdb
+  total atoms in file: 9
+Loading PDB file: ./AA_deprot2.pdb
+  total atoms in file: 8
+Writing pdb file: AA10_f0.70.pdb
+	Quit
+
+Exiting LEaP: Errors = 0; Warnings = 0; Notes = 0.

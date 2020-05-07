@@ -1,0 +1,307 @@
+!!index array str
+ "ND"
+ "NHD"
+ "NTD"
+!entry.ND.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "CA" "CT" 0 1 0 1 6 -0.109530
+ "CB" "CT" 0 1 0 2 6 0.103550
+ "CC" "CT" 0 1 0 3 6 -0.021320
+ "N" "NT" 0 1 0 4 7 -0.938080
+ "HA1" "HC" 0 1 0 5 1 0.033330
+ "HB1" "H1" 0 1 0 7 1 0.055120
+ "HB2" "H1" 0 1 0 8 1 0.055120
+ "HC1" "HC" 0 1 0 9 1 0.056120
+ "HC2" "HC" 0 1 0 10 1 0.056120
+ "HN1" "H" 0 1 0 11 1 0.354780
+ "HN2" "H" 0 1 0 12 1 0.354780
+!entry.ND.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+ "CA" "CT" 0 -1 0.0
+ "CB" "CT" 0 -1 0.0
+ "CC" "CT" 0 -1 0.0
+ "N" "NT" 0 -1 0.0
+ "HA1" "HC" 0 -1 0.0
+ "HB1" "H1" 0 -1 0.0
+ "HB2" "H1" 0 -1 0.0
+ "HC1" "HC" 0 -1 0.0
+ "HC2" "HC" 0 -1 0.0
+ "HN1" "H" 0 -1 0.0
+ "HN2" "H" 0 -1 0.0
+!entry.ND.unit.boundbox array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.ND.unit.childsequence single int
+ 2
+!entry.ND.unit.connect array int
+ 1
+ 3
+!entry.ND.unit.connectivity table  int atom1x  int atom2x  int flags
+ 4 10 1
+ 4 11 1
+ 3 8 1
+ 3 9 1
+ 2 4 1
+ 2 6 1
+ 2 7 1
+ 1 5 1
+ 1 2 1
+ 1 3 1
+!entry.ND.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+ "U" 0 "R" 1
+ "R" 1 "A" 11
+ "R" 1 "A" 10
+ "R" 1 "A" 9
+ "R" 1 "A" 8
+ "R" 1 "A" 7
+ "R" 1 "A" 6
+ "R" 1 "A" 5
+ "R" 1 "A" 4
+ "R" 1 "A" 3
+ "R" 1 "A" 2
+ "R" 1 "A" 1
+!entry.ND.unit.name single str
+ "ND"
+!entry.ND.unit.positions table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+!entry.ND.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ 1 3 0 0 0 0
+!entry.ND.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "ND" 1 13 1 "?" 0
+!entry.ND.unit.residuesPdbSequenceNumber array int
+ 0
+!entry.ND.unit.solventcap array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.ND.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+!entry.NHD.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "CA" "CT" 0 1 131072 1 6 -0.109530
+ "CB" "CT" 0 1 131072 2 6 0.103550
+ "CC" "CT" 0 1 131072 3 6 -0.021320
+ "N" "NT" 0 1 131072 4 7 -0.938080
+ "HA1" "HC" 0 1 131072 5 1 0.016660
+ "HA2" "HC" 0 1 131072 6 1 0.016660
+ "HB1" "H1" 0 1 131072 7 1 0.055120
+ "HB2" "H1" 0 1 131072 8 1 0.055120
+ "HC1" "HC" 0 1 131072 9 1 0.056120
+ "HC2" "HC" 0 1 131072 10 1 0.056120
+ "HN1" "H" 0 1 131072 11 1 0.354780
+ "HN2" "H" 0 1 131072 12 1 0.354780
+!entry.NHD.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+ "CA" "CT" 0 -1 0.0
+ "CB" "CT" 0 -1 0.0
+ "CC" "CT" 0 -1 0.0
+ "N" "NT" 0 -1 0.0
+ "HA1" "HC" 0 -1 0.0
+ "HA2" "HC" 0 -1 0.0
+ "HB1" "H1" 0 -1 0.0
+ "HB2" "H1" 0 -1 0.0
+ "HC1" "HC" 0 -1 0.0
+ "HC2" "HC" 0 -1 0.0
+ "HN1" "H" 0 -1 0.0
+ "HN2" "H" 0 -1 0.0
+!entry.NHD.unit.boundbox array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NHD.unit.childsequence single int
+ 2
+!entry.NHD.unit.connect array int
+ 0
+ 3
+!entry.NHD.unit.connectivity table  int atom1x  int atom2x  int flags
+ 1 2 1
+ 1 3 1
+ 1 5 1
+ 1 6 1
+ 2 4 1
+ 2 7 1
+ 2 8 1
+ 3 9 1
+ 3 10 1
+ 4 11 1
+ 4 12 1
+!entry.NHD.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+ "U" 0 "R" 1
+ "R" 1 "A" 1
+ "R" 1 "A" 2
+ "R" 1 "A" 3
+ "R" 1 "A" 4
+ "R" 1 "A" 5
+ "R" 1 "A" 6
+ "R" 1 "A" 7
+ "R" 1 "A" 8
+ "R" 1 "A" 9
+ "R" 1 "A" 10
+ "R" 1 "A" 11
+ "R" 1 "A" 12
+!entry.NHD.unit.name single str
+ "'NHD'"
+!entry.NHD.unit.positions table  dbl x  dbl y  dbl z
+ -1.708000 1.009000 -0.071000
+ -2.317000 1.176000 1.334000
+ -0.485000 0.066000 -0.032000
+ -3.478000 2.078000 1.287000
+ -2.469000 0.607000 -0.744000
+ -1.407000 1.987000 -0.455000
+ -1.567000 1.592000 2.012000
+ -2.633000 0.201000 1.715000
+ -0.797000 -0.912000 0.338000
+ 0.233000 0.463000 0.690000
+ -3.887000 2.172000 2.215000
+ -4.197000 1.689000 0.679000
+!entry.NHD.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ 0 3 0 0 0 0
+!entry.NHD.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "NHD" 1 13 1 "?" 0
+!entry.NHD.unit.residuesPdbSequenceNumber array int
+ 1
+!entry.NHD.unit.solventcap array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NHD.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+!entry.NTD.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "CA" "CT" 0 1 131072 1 6 -0.109530
+ "CB" "CT" 0 1 131072 2 6 0.103550
+ "CC" "CT" 0 1 131072 3 6 -0.021320
+ "N" "NT" 0 1 131072 4 7 -0.938080
+ "HA1" "HC" 0 1 131072 5 1 0.033330
+ "HB1" "H1" 0 1 131072 7 1 0.055120
+ "HB2" "H1" 0 1 131072 8 1 0.055120
+ "HC1" "HC" 0 1 131072 9 1 0.037410
+ "HC2" "HC" 0 1 131072 10 1 0.037410
+ "HN1" "H" 0 1 131072 11 1 0.354780
+ "HN2" "H" 0 1 131072 12 1 0.354780
+ "HC3" "HC" 0 1 131072 13 1 0.037410
+!entry.NTD.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+ "CA" "CT" 0 -1 0.0
+ "CB" "CT" 0 -1 0.0
+ "CC" "CT" 0 -1 0.0
+ "N" "NT" 0 -1 0.0
+ "HA1" "HC" 0 -1 0.0
+ "HB1" "H1" 0 -1 0.0
+ "HB2" "H1" 0 -1 0.0
+ "HC1" "HC" 0 -1 0.0
+ "HC2" "HC" 0 -1 0.0
+ "HN1" "H" 0 -1 0.0
+ "HN2" "H" 0 -1 0.0
+ "HC3" "HC" 0 -1 0.0
+!entry.NTD.unit.boundbox array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NTD.unit.childsequence single int
+ 2
+!entry.NTD.unit.connect array int
+ 1
+ 0
+!entry.NTD.unit.connectivity table  int atom1x  int atom2x  int flags
+ 4 10 1
+ 4 11 1
+ 3 8 1
+ 3 9 1
+ 3 12 1
+ 2 4 1
+ 2 6 1
+ 2 7 1
+ 1 5 1
+ 1 2 1
+ 1 3 1
+!entry.NTD.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+ "U" 0 "R" 1
+ "R" 1 "A" 11
+ "R" 1 "A" 10
+ "R" 1 "A" 9
+ "R" 1 "A" 8
+ "R" 1 "A" 7
+ "R" 1 "A" 6
+ "R" 1 "A" 5
+ "R" 1 "A" 4
+ "R" 1 "A" 3
+ "R" 1 "A" 2
+ "R" 1 "A" 1
+ "R" 1 "A" 12
+!entry.NTD.unit.name single str
+ "'NTD'"
+!entry.NTD.unit.positions table  dbl x  dbl y  dbl z
+ 1.588000 -2.269000 -0.895000
+ 1.686000 -3.177000 -2.147000
+ 2.759000 -2.572000 0.069000
+ 1.411000 -4.584000 -1.809000
+ 0.663000 -2.497000 -0.362000
+ 2.687000 -3.098000 -2.581000
+ 0.965000 -2.858000 -2.902000
+ 3.720000 -2.370000 -0.411000
+ 2.746000 -3.618000 0.385000
+ 2.092000 -4.919000 -1.130000
+ 1.500000 -5.167000 -2.639000
+ 2.686000 -1.955000 0.967000
+!entry.NTD.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ 1 0 0 0 0 0
+!entry.NTD.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+ "NTD" 1 14 1 "?" 0
+!entry.NTD.unit.residuesPdbSequenceNumber array int
+ 1
+!entry.NTD.unit.solventcap array dbl
+ -1.000000
+ 0.0
+ 0.0
+ 0.0
+ 0.0
+!entry.NTD.unit.velocities table  dbl x  dbl y  dbl z
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0
+ 0.0 0.0 0.0

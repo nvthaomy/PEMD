@@ -1,0 +1,15 @@
+source leaprc.gaff2
+source leaprc.ff99
+source leaprc.water.opc
+loadOFF /home/mnguyen/bin/PEMD/MDscripts/lib/PAAP9N9c5.lib
+loadOFF /home/mnguyen/bin/PEMD/MDscripts/lib/PAAD9N9c4.lib
+loadOFF /home/mnguyen/bin/PEMD/MDscripts/lib/PAHP1N11c5.lib
+loadOFF /home/mnguyen/bin/PEMD/MDscripts/lib/PAHD1N11c6.lib
+
+x=loadpdb mixture.pdb
+addions x Na+ 0
+addions x Cl- 0
+setbox x vdw 1
+saveamberparm x mixture.parm7 mixture.crd
+savepdb x mixture.pdb
+quit

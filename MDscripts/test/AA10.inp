@@ -1,0 +1,13 @@
+tolerance 2.0
+filetype pdb
+output AA10.pdb
+structure AA10_f0.60.pdb
+	number 1
+	resnumbers 2
+	inside box 2 2 2 18.0 18.0 18.0
+	end structure
+structure /home/mnguyen/bin/PAAMD/buildPAA/opc.pdb
+	number 100
+	resnumbers 2
+	inside box 2 2 2 18.0 18.0 18.0
+	end structure

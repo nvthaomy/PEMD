@@ -1,0 +1,28 @@
+tolerance 2.0
+filetype pdb
+output mixture.pdb
+structure AA10_f0.70.pdb
+	number 1
+	resnumbers 2
+	inside box 2 2 2 48.0 48.0 48.0
+	end structure
+structure AH10_f0.70.pdb
+	number 1
+	resnumbers 2
+	inside box 2 2 2 48.0 48.0 48.0
+	end structure
+structure /home/mnguyen/bin/PEMD/MDscripts/lib/opc.pdb
+	number 100
+	resnumbers 2
+	inside box 2 2 2 48.0 48.0 48.0
+	end structure
+structure /home/mnguyen/bin/PEMD/MDscripts/lib/na.pdb
+	number 20
+	resnumbers 2
+	inside box 2 2 2 48.0 48.0 48.0
+	end structure
+structure /home/mnguyen/bin/PEMD/MDscripts/lib/cl.pdb
+	number 20
+	resnumbers 2
+	inside box 2 2 2 48.0 48.0 48.0
+	end structure

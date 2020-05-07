@@ -1,0 +1,6 @@
+
+Calculating number of deprotonated monomers andmodifying input fraction of deprotonation:
+New DOI is : 0.70
+Building AH10 of with N = 10, f = 0.70, charge pattern = even, meso fraction  = 1.0
+Writing tleap input file to build a single polymer with different deprotonated fraction
+Done writing tleap input file
