@@ -112,8 +112,7 @@ positions = inpcrd.positions
 def MakeSimulation(temperature, pressure):
     system = prmtop.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=nonbondedCutoff,constraints=constraints, rigidWater=rigidWater, ewaldErrorTolerance=ewaldErrorTolerance)
     topology.setPeriodicBoxVectors(system.getDefaultPeriodicBoxVectors())
-    if pressure:
-        {sBaro}
+    {sBaro}
     integrator = LangevinIntegrator(temperature, friction, dt)
     integrator.setConstraintTolerance(constraintTolerance)
     simulation = Simulation(topology, system, integrator, platform, platformProperties)
