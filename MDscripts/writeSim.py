@@ -109,7 +109,7 @@ print(\'Building system...\')
 topology = prmtop.topology
 positions = inpcrd.positions
 
-def MakeSimulation(temperature, pressure):
+def MakeSimulation(temperature):
     system = prmtop.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=nonbondedCutoff,constraints=constraints, rigidWater=rigidWater, ewaldErrorTolerance=ewaldErrorTolerance)
     topology.setPeriodicBoxVectors(system.getDefaultPeriodicBoxVectors())
     {sBaro}
@@ -144,7 +144,7 @@ else:
     print('===Running NPT simulation===')
 #Melt
 if meltingSteps > 0:
-    simulation = MakeSimulation(meltTemperature,pressure)
+    simulation = MakeSimulation(meltTemperature)
     simulation.reporters.append(CheckpointReporter('checkpntMelt.chk', {chkStr}))
     #simulation.loadState('output.xml')
     #simulation.loadCheckpoint('checkpnt.chk')
@@ -164,7 +164,7 @@ if meltingSteps > 0:
 
 
     #Cooling
-    simulation = MakeSimulation(temperature,pressure)
+    simulation = MakeSimulation(temperature)
     simulation.reporters.append(CheckpointReporter('checkpnt.chk',{chkStr}))
     simulation.loadCheckpoint('checkpntMelt.chk')
     print('Cool down...')
