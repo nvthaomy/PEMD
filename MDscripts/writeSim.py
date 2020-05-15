@@ -165,8 +165,15 @@ if meltingSteps > 0:
 
     #Cooling
     simulation = MakeSimulation(temperature)
-    simulation.reporters.append(CheckpointReporter('checkpnt.chk',{chkStr}))
     simulation.loadCheckpoint('checkpntMelt.chk')
+    positions = simulation.context.getState(getPositions=True).getPositions()
+    velocities = simulation.context.getState(getVelocities=True).getVelocities()
+
+    simulation = MakeSimulation(temperature) 
+    simulation.reporters.append(CheckpointReporter('checkpnt.chk',{chkStr}))
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
+
     print('Cool down...')
     simulation.reporters.append(dcdReporterCooling)
     simulation.reporters.append(dataReporterCooling)
@@ -185,7 +192,7 @@ print('Simulating...')
 simulation.reporters = []
 simulation.reporters.append(dcdReporter)
 simulation.reporters.append(dataReporter)
-simulation.reporters.append(CheckpointReporter('checkpnt.chk',1000))
+simulation.reporters.append(CheckpointReporter('checkpnt.chk',{chkStr}))
 simulation.currentStep = 0
 simulation.step(steps)
 simulation.saveState('output.xml')
