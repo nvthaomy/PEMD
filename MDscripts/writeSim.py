@@ -168,11 +168,13 @@ if meltingSteps > 0:
     simulation.loadCheckpoint('checkpntMelt.chk')
     positions = simulation.context.getState(getPositions=True).getPositions()
     velocities = simulation.context.getState(getVelocities=True).getVelocities()
+    box = simulation.context.getState().getPeriodicBoxVectors()
 
     simulation = MakeSimulation(temperature) 
     simulation.reporters.append(CheckpointReporter('checkpnt.chk',{chkStr}))
     simulation.context.setPositions(positions)
     simulation.context.setVelocities(velocities)
+    simulation.context.setPeriodicBoxVectors(*box)
 
     print('Cool down...')
     simulation.reporters.append(dcdReporterCooling)

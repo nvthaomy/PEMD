@@ -176,20 +176,30 @@ class Molecule:
             tact=[]
             #follow Bernoullian statistics (common with free radical polymerization)
             #stereo of the next monomer is independent of the stereochemistry of growing chain
-            for i in range(0,N):
+            for i in range(0,N-3): # -1 due to get number of dyads, -2 due to the end monomers do not have stereochemistry
                 rand = np.random.random()
                 if rand <= Pm:
                         dyad.append('m')
                 else:
                         dyad.append('r')
-            print('Diad sequence from meso diad fraction of {}:\n{}'.format(Pm,dyad))
+            #count triad fractions
+            dyad_str = ''.join(dyad)
+            f_m =  dyad_str.count('m')/len(dyad)
+            f_mm = dyad_str.count('mm')/(len(dyad)-1)
+            f_rr = dyad_str.count('rr')/(len(dyad)-1)
+            f_mr = 1 - f_mm - f_rr
+            print('Diad sequence (excluding end monomers) from meso diad fraction of {}:\n{}'.format(Pm,dyad))
+            print('Actual f_m {}'.format(f_m))
+            print('f_mm {}'.format(f_mm))
+            print('f_rr {}'.format(f_rr))
+            print('f_mr + f_rm {}'.format(f_mr))
             tact.append(self.headName) #head group is achiral
             tact.append('u') #arbitrarily pick the second monomer to be "up"
-            for i in range(1,len(dyad)-2):
+            for i in range(0,len(dyad)):
                 if dyad[i] == 'm':
-                    tact.append(tact[i])
+                    tact.append(tact[-1])
                 else:
-                    if tact[i] == 'u':
+                    if tact[-1] == 'u':
                         tact.append('d')
                     else:
                         tact.append('u')

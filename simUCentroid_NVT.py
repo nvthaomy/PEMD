@@ -13,9 +13,9 @@ kB = 1.380649*10**(-23)*joules/kelvin* N_av #joules/kelvin/mol
 fName = ''
 
 # Input Files
-prmtop = AmberPrmtopFile('../../../build/xp0.05_15AA12f1_377na_197cl.parm7')
-inpcrd = AmberInpcrdFile('../../../build/xp0.05_15AA12f1_377na_197cl.crd')
-checkpnt2load = False
+prmtop = AmberPrmtopFile('xp0.05_16AA12f1_16AH12f1_826nacl_21740hoh.parm7')
+inpcrd = AmberInpcrdFile('xp0.05_16AA12f1_16AH12f1_826nacl_21740hoh.crd')
+checkpnt2load = 'checkpnt.chk'
 state2load = False
 DOP = 12
 PolyResName = ['AP','AHP','ATP','AD','AHD','ATD','NP','NHP','NTP','ND','NHD','NTD']
@@ -28,7 +28,7 @@ ewaldErrorTolerance = 0.0001
 constraints = HBonds
 rigidWater = True
 constraintTolerance = 0.000001
-box_vectors = np.diag([5.4,5.4,11.52587]) * nanometer
+box_vectors = np.diag([7.0,7.0,14.37576903]) * nanometer
 
 # Integration Options
 dt = 0.002*picoseconds #0.002
@@ -56,12 +56,12 @@ Kappa_PW = 1/(2*((aevs[0]*nanometer)**2 + (aevs[1]*nanometer)**2)) #k = 1/(2 (ai
 
 #additional gaussian attraction/repulsion between monomer COMs
 mappingPP = 1
-B_PP = 0.5 *kB*temperature
+B_PP = 1.0 *kB*temperature
 aevs = [0.45,0.45] #excluded volume a in nanometer of 2 species in the gaussian 
 Kappa_PP = 1/(2*((aevs[0]*nanometer)**2 + (aevs[1]*nanometer)**2)) #k = 1/(2 (ai^2+aj^2))
 
 # Simulation Options
-steps = 2e8
+steps = 4e8
 equilibrationSteps = 2e4
 platform = Platform.getPlatformByName('CUDA')
 platformProperties = {'Precision': 'mixed'}
@@ -69,26 +69,33 @@ dcdReporter = mdtraj.reporters.DCDReporter('trajectory{}.dcd'.format(fName), 500
 dataReporter = StateDataReporter('log{}.txt'.format(fName), 1000, totalSteps=steps, step=True, speed=True, progress=True, remainingTime=True, potentialEnergy=True, totalEnergy=True, temperature=True, volume=True, density=True, separator='\t')
 
 # Prepare the Simulation
-
-print('Building system...')
 topology = prmtop.topology
 positions = inpcrd.positions
-system = prmtop.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=nonbondedCutoff,constraints=constraints, rigidWater=rigidWater, ewaldErrorTolerance=ewaldErrorTolerance)
-topology.setPeriodicBoxVectors(system.getDefaultPeriodicBoxVectors())
+def MakeSimulation(temperature):
+    system = prmtop.createSystem(nonbondedMethod=nonbondedMethod, nonbondedCutoff=nonbondedCutoff,constraints=constraints, rigidWater=rigidWater, ewaldErrorTolerance=ewaldErrorTolerance)
+    topology.setPeriodicBoxVectors(system.getDefaultPeriodicBoxVectors())
+    integrator = LangevinIntegrator(temperature, friction, dt)
+    integrator.setConstraintTolerance(constraintTolerance)
+    simulation = Simulation(topology, system, integrator, platform, platformProperties)
+    simulation.context.setPositions(positions)
+    if inpcrd.boxVectors is not None:
+        simulation.context.setPeriodicBoxVectors(*inpcrd.boxVectors)
 
-#=============================
-# Create external potential
-#=============================
-external={"U":Uext,"NPeriod":Nperiod,"axis":axis ,"planeLoc":planeLoc}
-direction=['x','y','z']
-ax = external["axis"]
+    simulation.context.setPeriodicBoxVectors(*box_vectors)
 
-if mappingUext > DOPUext:
-    raise Exception('Mapping ratio used in Uext cannot be larger than chain length of molecule!')
-if float(DOPUext) % float(mappingUext) != 0:
-    raise Exception('Chain length is not divisible by mapping ratio used in Uext!')
+    #=============================
+    # Create external potential
+    #=============================
+    external={"U":Uext,"NPeriod":Nperiod,"axis":axis ,"planeLoc":planeLoc}
+    direction=['x','y','z']
+    ax = external["axis"]
 
-if external["U"] > 0.0 * kilojoules_per_mole:
+    if mappingUext > DOPUext:
+        raise Exception('Mapping ratio used in Uext cannot be larger than chain length of molecule!')
+    if float(DOPUext) % float(mappingUext) != 0:
+        raise Exception('Chain length is not divisible by mapping ratio used in Uext!')
+
+    if external["U"] > 0.0 * kilojoules_per_mole:
         energy_function = 'U*sin(2*pi*NPeriod*({axis}1-r0)/L)'.format(axis=direction[ax])
         fExt = openmm.CustomCentroidBondForce(1,energy_function)
         fExt.addGlobalParameter("U", external["U"])
@@ -96,7 +103,7 @@ if external["U"] > 0.0 * kilojoules_per_mole:
         fExt.addGlobalParameter("pi",np.pi)
         fExt.addGlobalParameter("r0",external["planeLoc"])
         fExt.addGlobalParameter("L",box_vectors[ax][ax])
-        
+
         #get number of polymer chain (or small molecules)
         NP = 0
         resInExtFieldIDs = []
@@ -125,11 +132,11 @@ if external["U"] > 0.0 * kilojoules_per_mole:
         np.savetxt('uext_AtomName.dat',aNames,header='AtomName',fmt='%s')
         system.addForce(fExt)
 
-#=========================================================================
-# Create Gaussian attraction/repulsion between polymer COM and solvent COM
-#=========================================================================
-gaussPW={"B_PW": B_PW, "Kappa_PW": Kappa_PW}
-if np.abs(gaussPW["B_PW"]) > 0.0 * kilojoules_per_mole:
+    #=========================================================================
+    # Create Gaussian attraction/repulsion between polymer COM and solvent COM
+    #=========================================================================
+    gaussPW={"B_PW": B_PW, "Kappa_PW": Kappa_PW}
+    if np.abs(gaussPW["B_PW"]) > 0.0 * kilojoules_per_mole:
         energy_function1 = 'B_PW*exp(-Kappa_PW*distance(g1,g2)^2)'
         fGauss = openmm.CustomCentroidBondForce(2,energy_function1)
         fGauss.addGlobalParameter("B_PW", gaussPW["B_PW"])
@@ -154,7 +161,7 @@ if np.abs(gaussPW["B_PW"]) > 0.0 * kilojoules_per_mole:
             PolyIds.append(PolyId)
             fGauss.addGroup(PolyId) #by default, using particle masses as weights 
 #        np.savetxt('gaussPW_PolyId.dat',PolyIds,fmt='%i',header='Polymer ids in gaussPW')
-    
+
         #adding all solvent 
         NW = 0
         WatIds = []
@@ -175,14 +182,14 @@ if np.abs(gaussPW["B_PW"]) > 0.0 * kilojoules_per_mole:
                 fGauss.addBond([i,j],[]) #by default, using particle masses as weights
         print('{} Gaussian interactions were added for {} polymer beads and {} water molecules'.format(fGauss.getNumBonds(),NBeads,NW))
         print(gaussPW)
-        fGauss.setUsesPeriodicBoundaryConditions(True)        
+        fGauss.setUsesPeriodicBoundaryConditions(True)
         system.addForce(fGauss)
 
-#=========================================================================
-# Create Gaussian attraction/repulsion between COM of monomers
-#=========================================================================
-gaussPP={"B_PP": B_PP, "Kappa_PP": Kappa_PP}
-if np.abs(gaussPP["B_PP"]) > 0.0 * kilojoules_per_mole:
+    #=========================================================================
+    # Create Gaussian attraction/repulsion between COM of monomers
+    #=========================================================================
+    gaussPP={"B_PP": B_PP, "Kappa_PP": Kappa_PP}
+    if np.abs(gaussPP["B_PP"]) > 0.0 * kilojoules_per_mole:
         energy_function2 = 'B_PP*exp(-1* Kappa_PP *distance(g1,g2)^2)'
         fGauss = openmm.CustomCentroidBondForce(2,energy_function2)
         fGauss.addGlobalParameter("B_PP", gaussPP["B_PP"])
@@ -196,7 +203,7 @@ if np.abs(gaussPP["B_PP"]) > 0.0 * kilojoules_per_mole:
         NP /= DOP
         NBeads = int(NP*DOP/mappingPP)
         CGDOP = int(float(NBeads)/float(NP))
-        
+
         #adding polymer beads
         bondgroups = []
         for i in range(NBeads): #looping through CG beads
@@ -220,40 +227,36 @@ if np.abs(gaussPP["B_PP"]) > 0.0 * kilojoules_per_mole:
         fGauss.setUsesPeriodicBoundaryConditions(True)
         system.addForce(fGauss)
 
+    forces = system.getForces()
+    for force in forces:
+        if isinstance(force,simtk.openmm.openmm.NonbondedForce):
+            nonbondedforce = force
+    nonbondedforce.setUseDispersionCorrection(tailCorrection)
+    nonbondedforce.updateParametersInContext(simulation.context)
+    forces = system.getForces()
+    for force in forces:
+        if isinstance(force,simtk.openmm.openmm.NonbondedForce):
+            nonbondedforce = force
+    print('getUseDispersionCorrection')
+    print(nonbondedforce.getUseDispersionCorrection())
+    return simulation
 
-integrator = LangevinIntegrator(temperature, friction, dt)
-integrator.setConstraintTolerance(constraintTolerance)
-simulation = Simulation(topology, system, integrator, platform) #, platformProperties)
-simulation.context.setPositions(positions)
-if inpcrd.boxVectors is not None:
-	simulation.context.setPeriodicBoxVectors(*inpcrd.boxVectors)
-
-simulation.context.setPeriodicBoxVectors(*box_vectors)
-
-forces = system.getForces()
-for force in forces:
-    if isinstance(force,simtk.openmm.openmm.NonbondedForce):
-        nonbondedforce = force
-nonbondedforce.setUseDispersionCorrection(tailCorrection)
-nonbondedforce.updateParametersInContext(simulation.context)
-forces = system.getForces()
-for force in forces:
-    if isinstance(force,simtk.openmm.openmm.NonbondedForce):
-        nonbondedforce = force
-print('getUseDispersionCorrection')
-print(nonbondedforce.getUseDispersionCorrection())
-print('getNonbondedMethod')
-print(nonbondedforce.getNonbondedMethod())
-#print('getLJPMEParametersInContext')
-#print(nonbondedforce.getLJPMEParametersInContext(simulation.context))
-
+simulation = MakeSimulation(temperature)
 #Restart and Check point
-if state2load:
-    simulation.loadState(state2load)
-    print('Initiate simulation from {}'.format(state2load))
-elif checkpnt2load:
-    simulation.loadCheckpoint(checkpnt2load)
-    print('Initiate simulation from {}'.format(checkpnt2load))
+if state2load or checkpnt2load:
+    if state2load:
+        simulation.loadState(state2load)
+        print('Initiate simulation from {}'.format(state2load))
+    elif checkpnt2load:
+        simulation.loadCheckpoint(checkpnt2load)
+        print('Initiate simulation from {}'.format(checkpnt2load))
+    positions = simulation.context.getState(getPositions=True).getPositions()
+    velocities = simulation.context.getState(getVelocities=True).getVelocities()
+     
+    simulation = MakeSimulation(temperature)
+    simulation.context.setPositions(positions)
+    simulation.context.setVelocities(velocities)
+    simulation.minimizeEnergy()
 else:
     # Minimize and Equilibrate
     print('Performing energy minimization...')
@@ -262,8 +265,7 @@ else:
     PDBFile.writeModel(simulation.topology, state.getPositions(), open('traj_minimized{}.pdb'.format(fName),'w'))
     simulation.saveState('output_minimized{}.xml'.format(fName))
     simulation.context.setVelocitiesToTemperature(temperature)
-simulation.minimizeEnergy()
-simulation.context.setPeriodicBoxVectors(*box_vectors)
+
 simulation.reporters.append(CheckpointReporter('checkpnt{}.chk'.format(fName), 5000))
 state = simulation.context.getState(getPositions=True)
 print ("Periodic box vector: {}".format(state.getPeriodicBoxVectors()))

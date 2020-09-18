@@ -9,6 +9,7 @@ import mdtraj,os,re
 import numpy as np
 import matplotlib
 import matplotlib.pyplot as plt
+from matplotlib import cm
 
 showPlots = True
 try:
@@ -19,7 +20,7 @@ except KeyError:
 #plt.style.use('seaborn-dark')
 matplotlib.rc('font', size=7)
 matplotlib.rc('axes', titlesize=7)
-
+colormap = 'coolwarm'
 import argparse as ap
 parser = ap.ArgumentParser(description="Get 1D histogram, assuming single species")
 
@@ -33,6 +34,7 @@ parser.add_argument('-Lz',type=float, default=10, help="Lz, default 10")
 parser.add_argument('-nbins',type=int, default=100, help="Number of bins")
 parser.add_argument('-com',action='store_true', help="substract median value of position in each frame")
 parser.add_argument('-stride',type=int, default=1, help="stride")
+parser.add_argument('-intv', type = int, default=None, help="interval to calculate average density profile, only available with -atoms flag")
 args = parser.parse_args()
 
 ax = args.axis
@@ -41,10 +43,12 @@ topfile = args.topfile
 anames = args.atoms
 com = args.com
 stride = args.stride
+intv = args.intv
+
 print("... Loading Trajectory ...")
 traj = mdtraj.load(coordfile,top=topfile,stride=stride)
 top = traj.topology
-print("... Done Loading ...")
+print("... Done Loading {} frames ...".format(traj.n_frames))
 Lx,Ly,Lz = traj.unitcell_lengths[0,0], traj.unitcell_lengths[0,1], traj.unitcell_lengths[0,2] #assuming constant box shape
 box = np.array([traj.unitcell_lengths[0,0], traj.unitcell_lengths[0,1], traj.unitcell_lengths[0,2]]) #assuming constant box shape
 
@@ -93,37 +97,56 @@ if anames:
     traj.save('masked_'+coordfile)  
     traj[0].save('masked_top_'+coordfile.split('.')[0]+'.pdb')
     n_frames = traj.n_frames
-
+    if not intv:
+        intv = n_frames 
     NtotMasked = traj.xyz.shape[1]
 
-    xs = traj.xyz[:,:,ax]
-    if com:
-        xmedian = np.median(xs,1)
-        xs = xs - xmedian[:,None]
-    xs = np.ravel(xs)
-    xs = np.mod(xs,L) #wrap pbc
+    nSeries = n_frames // intv 
+    if n_frames%intv != 0:
+        nSeries += 1
+    data = []
+    header = ''
+    colors = [matplotlib.cm.get_cmap(colormap)(x/nSeries) for x in range(nSeries)]
+    for i in range(1,nSeries+1): 
+        if n_frames%intv != 0 and i == nSeries: #plot all frames
+            xs = traj.xyz[:,:,ax]
+            norm = traj.xyz[:,:,ax].shape[0]
+        else:
+            xs = traj.xyz[:intv*i,:,ax]
+            norm = traj.xyz[:intv*i,:,ax].shape[0]
+        if com:
+            xmedian = np.median(xs,1)
+            xs = xs - xmedian[:,None]
+        xs = np.ravel(xs)
+        xs = np.mod(xs,L) #wrap pbc
 
-    histMasked,bins = np.histogram(xs, range = binRange,  bins=nbins, density=False)
-    histMasked = np.array(histMasked)
-    histMasked = histMasked/ n_frames
+        histMasked,bins = np.histogram(xs, range = binRange,  bins=nbins, density=False)
+        histMasked = np.array(histMasked)
+        histMasked = histMasked/norm
 
-    binmidMasked = 0.5*(bins[1:]+bins[0:-1])
-    if all(abs(binmidMasked - binmidAll) < 1e-3):
-       Exception('Bin values between of masked traj and original traj do not match')
+        binmidMasked = 0.5*(bins[1:]+bins[0:-1])
+        if all(abs(binmidMasked - binmidAll) < 1e-3):
+           Exception('Bin values between of masked traj and original traj do not match')
 
-    #get number density
-    density = histMasked/Vbin
-    data = np.vstack([binmidMasked,histMasked,density]).T
-    np.savetxt('{}hist_{}.dat'.format(['x','y','z'][ax],'_'.join(anames)),data,header='bin-midpt\tCount\tNumberDensity\tMasked atoms: {}'.format(args.atoms))
-    
-    fig,axs = plt.subplots(nrows=1, ncols=1, figsize=[3,2])
-    axs.plot(binmidMasked, density, marker=None,ls='-',lw=0.75,mfc="None",ms=2)
-    #axs.legend(loc='best',prop={'size': 5})
+        #get number density
+        density = histMasked/Vbin
+        if i == 1:
+            data.append(binmidMasked)
+            fig,axs = plt.subplots(nrows=1, ncols=1, figsize=[3,2])
+            axs.set_prop_cycle('color',colors)
+        data.extend([histMasked,density])
+        header += 'Count(fr0-{a})\tNumberDensity(fr0-{a})\t'.format(a=intv*i-1)
+        axs.plot(binmidMasked, density, marker=None,ls='-',lw=1.25, mfc="None",ms=2,label = 'fr0-{}'.format(intv*i-1))
+
+#    axs.legend(loc='best',prop={'size': 5})
+    plt.set_cmap = matplotlib.cm.get_cmap(name='coolwarm')
     plt.xlabel('{}'.format(['x','y','z'][ax]))
     plt.ylabel('Number Density')
     title ='{}histogram_{}'.format(['x','y','z'][ax],' '.join(args.atoms))
     plt.title(title, loc = 'center')
     plt.savefig('_'.join(re.split(' |=|,',title))+'.png',dpi=500,transparent=True,bbox_inches="tight")
+    data = np.vstack(data).T
+    np.savetxt('{}hist_{}.dat'.format(['x','y','z'][ax],'_'.join(anames)),data,header='Masked atoms: {}\n# bin-midpt\t{}'.format(args.atoms,header))
 else:
     fig,axs = plt.subplots(nrows=1, ncols=1, figsize=[3,2])
     axs.plot(binmidAll, densityAll, marker=None,ls='-',lw=0.75,mfc="None",ms=2)
