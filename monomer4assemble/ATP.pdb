@@ -1,0 +1,30 @@
+LIMIT HEAD 1
+LIMIT TAIL 8
+LIMIT HEAD_HOOK 11
+LIMIT TAIL_HOOK 12
+ATOM      1  CA  ATP     1      -3.776   1.932  -0.240  1.00  0.00           C  
+ATOM      2  CB  ATP     1      -3.884   0.421  -0.248  1.00  0.00           C  
+ATOM      3  CC  ATP     1      -2.366   2.383   0.183  1.00  0.00           C  
+ATOM      4  OD1 ATP     1      -3.382  -0.286  -1.097  1.00  0.00           O  
+ATOM      5  OD2 ATP     1      -4.419  -0.069   0.836  1.00  0.00           O  
+ATOM      6  HA1 ATP     1      -4.515   2.360   0.442  1.00  0.00           H  
+ATOM      7  HC1 ATP     1      -2.139   2.028   1.191  1.00  0.00           H  
+ATOM      8  HC2 ATP     1      -1.613   1.987  -0.503  1.00  0.00           H  
+ATOM      9  HO  ATP     1      -4.370  -1.038   0.750  1.00  0.00           H  
+ATOM     10  HC3 ATP     1      -2.300   3.473   0.178  1.00  0.00           H  
+ATOM     11  H   ATP     1      -4.400   2.546  -1.477  1.00  0.00           H  
+ATOM     12  T   ATP     2      -0.715   1.469  -0.869  1.00  0.00           H  
+CONECT    1    2    3    6   11                                       
+CONECT    2    1    4    5                                            
+CONECT    3    1    7    8   10                                       
+CONECT    4    2                                                      
+CONECT    5    2    9                                                 
+CONECT    6    1                                                      
+CONECT    7    3                                                      
+CONECT    8    3   12                                                 
+CONECT    9    5                                                      
+CONECT   10    3                                                      
+CONECT   11    1                                                      
+CONECT   12    8                                                      
+MASTER        0    0    0    0    0    0    0    0   12    0   12    0
+END

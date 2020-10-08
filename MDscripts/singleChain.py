@@ -205,7 +205,7 @@ class Molecule:
                         tact.append('u')
             tact.append(self.tailName)
             return tact
-def BuildPoly(f,N,Pm,pattern, monName, neutralMons, ionizedMons,headName,tailName,libs,ff):
+def BuildPoly(f,N,Pm,pattern, monName, neutralMons, ionizedMons,headName,tailName,libs,ff,runTleap=True):
     with open("build_AA"+str(N)+".log", 'w') as log:     
         Poly = Molecule(N,f,Pm,pattern,headName,tailName)
         molName = monName + str(N) 
@@ -250,12 +250,13 @@ def BuildPoly(f,N,Pm,pattern, monName, neutralMons, ionizedMons,headName,tailNam
         sequence = ' '.join(tact_charge)    
         pdbOut = '{}_f{:3.2f}.pdb'.format(molName,f)  
 
-
-        log.write("\nWriting tleap input file to build a single polymer with different deprotonated fraction")
-        libstr = ""
-        for lib in libs:
-            libstr += 'loadOFF {}\n'.format(lib)
-        s = """source leaprc.{ff}
+        buildFile = ''
+        if runTleap:
+            log.write("\nWriting tleap input file to build a single polymer with different deprotonated fraction")
+            libstr = ""
+            for lib in libs:
+                libstr += 'loadOFF {}\n'.format(lib)
+            s = """source leaprc.{ff}
 {libstr}un =loadpdb {neu1}
 ui =loadpdb {ion1}
 dn =loadpdb {neu2}
@@ -274,20 +275,18 @@ x = sequence{{{seq}}}
 savepdb x {pdbOut}
 quit""".format(libstr=libstr, neu1 = neutralMons[0], ion1 = ionizedMons[0], neu2 = neutralMons[1], ion2 = ionizedMons[1], f = f, seq = sequence, pdbOut = pdbOut, ff=ff)
 
-        buildFile = "build_"+str(molName)+".in"
-        file = open(buildFile,"w")
-        file.write(s)
-        log.write("\nDone writing tleap input file")
-    log.close()
-    cmd = 'tleap -f {} > build_{}.out'.format(buildFile,molName)
-#    print(cmd)
-#    os.system(cmd)
-    return buildFile, pdbOut, f
+            buildFile = "build_"+str(molName)+".in"
+            file = open(buildFile,"w")
+            file.write(s)
+            log.write("\nDone writing tleap input file")
+            cmd = 'tleap -f {} > build_{}.out'.format(buildFile,molName)
+        log.close()
+    return buildFile, pdbOut, f, sequence
     
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-ff", type=str, required=True, help="gaff2 or ff99")
+    parser.add_argument("-ff", type=str, default = 'gaff2', help="gaff2 or ff99")
     parser.add_argument("-f", type=float, required=True, help="degree of ionization")
     parser.add_argument("-N",type=int, required=True,
                         help="degree of polymerization")
@@ -298,11 +297,11 @@ if __name__ == "__main__":
     parser.add_argument("-e","--evendist", action = "store_true",
                         help="Evenly distributed deprotonation")
     parser.add_argument("-n", help='monomer name')
-    parser.add_argument("-pdbN", nargs=2, help = 'pdbs of two neutral chiral monomers')
-    parser.add_argument("-pdbI", nargs=2, help = 'pdbs of two ionized chiral monomers')
+    parser.add_argument("-pdbN", nargs=2, default=[], help = 'pdbs of two neutral chiral monomers')
+    parser.add_argument("-pdbI", nargs=2, default=[], help = 'pdbs of two ionized chiral monomers')
     parser.add_argument("-hn", help = 'name of head monomer (AH, NH)')
     parser.add_argument("-tn", help = 'name of tail monomer (AT,NT)')
-    parser.add_argument("-l",nargs ="+",
+    parser.add_argument("-l",nargs ="+", default = None,
                         help="path to tleap libraries for monomers")
     args = parser.parse_args()    
     f = args.f

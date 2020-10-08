@@ -1,0 +1,32 @@
+LIMIT HEAD 1
+LIMIT TAIL 3
+LIMIT HEAD_HOOK 12
+LIMIT TAIL_HOOK 13
+ATOM      1  CA  ND      1      -1.467   0.862   0.077  1.00  0.00           C  
+ATOM      2  CB  ND      1      -0.055   0.956  -0.517  1.00  0.00           C  
+ATOM      3  CC  ND      1      -1.535   0.003   1.339  1.00  0.00           C  
+ATOM      4  N   ND      1       0.429  -0.345  -0.974  1.00  0.00           N  
+ATOM      5  HA1 ND      1      -2.165   0.453  -0.686  1.00  0.00           H  
+ATOM      6  HB1 ND      1      -0.098   1.643  -1.391  1.00  0.00           H  
+ATOM      7  HB2 ND      1       0.651   1.388   0.227  1.00  0.00           H  
+ATOM      8  HC1 ND      1      -2.572   0.013   1.736  1.00  0.00           H  
+ATOM      9  HC2 ND      1      -0.853   0.407   2.117  1.00  0.00           H  
+ATOM     10  HN1 ND      1       1.340  -0.201  -1.467  1.00  0.00           H  
+ATOM     11  HN2 ND      1       0.626  -0.955  -0.148  1.00  0.00           H  
+ATOM     12  H   ND      1      -1.801   1.888   0.340  1.00  0.00           H  
+ATOM     13  T   ND      1      -1.264  -1.051   1.122  1.00  0.00           H  
+CONECT    1    2    3    5   12                                       
+CONECT    2    1    4    6    7                                       
+CONECT    3    1    8    9   13                                       
+CONECT    4    2   10   11                                            
+CONECT    5    1                                                      
+CONECT    6    2                                                      
+CONECT    7    2                                                      
+CONECT    8    3                                                      
+CONECT    9    3                                                      
+CONECT   10    4                                                      
+CONECT   11    4                                                      
+CONECT   12    1                                                      
+CONECT   13    3                                                      
+MASTER        0    0    0    0    0    0    0    0   13    0   13    0
+END

@@ -1,0 +1,36 @@
+LIMIT HEAD 6
+LIMIT TAIL 3
+LIMIT HEAD_HOOK 14
+LIMIT TAIL_HOOK 15
+ATOM      1  CA  NHP     1      -1.416   4.292   2.836  1.00  0.00           C  
+ATOM      2  CB  NHP     1      -0.355   3.696   1.890  1.00  0.00           H  
+ATOM      3  CC  NHP     1      -2.265   3.250   3.576  1.00  0.00           C  
+ATOM      4  N   NHP     1      -0.950   2.914   0.805  1.00  0.00           H  
+ATOM      5  HA1 NHP     1      -0.897   4.924   3.591  1.00  0.00           H  
+ATOM      6  HA2 NHP     1      -2.158   5.017   2.193  1.00  0.00           H  
+ATOM      7  HB1 NHP     1       0.220   4.540   1.449  1.00  0.00           H  
+ATOM      8  HB2 NHP     1       0.360   3.064   2.461  1.00  0.00           H  
+ATOM      9  HC1 NHP     1      -2.994   3.779   4.225  1.00  0.00           H  
+ATOM     10  HC2 NHP     1      -2.843   2.628   2.863  1.00  0.00           H  
+ATOM     11  HN1 NHP     1      -1.629   3.501   0.267  1.00  0.00           H  
+ATOM     12  HN2 NHP     1      -0.191   2.600   0.159  1.00  0.00           H  
+ATOM     13  HN3 NHP     1      -1.429   2.065   1.180  1.00  0.00           H  
+ATOM     14  H   NHP     1      -2.630   5.567   1.819  1.00  0.00           H  
+ATOM     15  T   NHP     1      -1.650   2.379   4.681  1.00  0.00           H  
+CONECT    1    2    3    5    6                                       
+CONECT    2    1    4    7    8                                       
+CONECT    3    1    9   10   15                                       
+CONECT    4    2   11   12   13                                       
+CONECT    5    1                                                      
+CONECT    6    1   14                                                 
+CONECT    7    2                                                      
+CONECT    8    2                                                      
+CONECT    9    3                                                      
+CONECT   10    3                                                      
+CONECT   11    4                                                      
+CONECT   12    4                                                      
+CONECT   13    4                                                      
+CONECT   14    6                                                      
+CONECT   15    3                                                      
+MASTER        0    0    0    0    0    0    0    0   15    0   15    0
+END
