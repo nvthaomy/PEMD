@@ -10,7 +10,7 @@ import sys, os, time
 from subprocess import call
 sys.path.append('/home/mnguyen/bin/PEMD/MDscripts/')
 import singleChain
-#sys.path.append('/home/mnguyen/bin/scripts/')
+sys.path.append('/home/mnguyen/bin/scripts/')
 import mdtraj_tac
 
 # name map: tleap nomenclature to assemble
@@ -40,7 +40,7 @@ assemblePath = '/home/mnguyen/bin/assemble/Assemble.py'
 f = 1.0
 N = 24
 Pm = 0.44
-nChain = 20 # 1 if Pm = 1 (isotactic) or 0 (syndiotactic)
+nChain = 30 # 1 if Pm = 1 (isotactic) or 0 (syndiotactic)
 monName = 'AH'
 nameExt = '_a' #extension to chain name
 pattern = 'even' # 'even' or random' #random deprotonation
@@ -95,7 +95,11 @@ box_grid_shape 5 5 5\n\n""".format(database=database, molName=molName)
 
 chainNames = []
 for i, seq in enumerate(sequences):
-    chainName = molName + '{}'.format(nameExt) + str(i)
+    if f == 1.0 or f == 0.0:
+        DOIstr = 'f'+str(int(f))
+    else:
+        DOIstr = 'f'+str(round(f,1)) 
+    chainName = monName + str(N) + DOIstr + '{}'.format(nameExt) + str(i)
     chainNames.append(chainName)
     s += 'chain {} '.format(chainName)
     for key in seq.split():
@@ -144,17 +148,17 @@ output init.pdb
 structure {cwd}/{molName}/{chainName}.pdb
         number 1
         resnumbers 2
-        inside box 1 1 1 100 100 100
+        inside box 1 1 1 60 60 60
         end structure
 structure /home/mnguyen/bin/PEMD/{ion}.pdb
         number {nIon}
         resnumbers 2
-        inside box 1 1 1 100 100 100
+        inside box 1 1 1 60 60 60
         end structure      
 structure /home/mnguyen/bin/PEMD/opc.pdb
-        number 800
+        number 500
         resnumbers 2
-        inside box 1 1 1 100 100 100
+        inside box 1 1 1 60 60 60
         end structure""".format(cwd=cwd, molName = molName, chainName = chainName, ion=ion, nIon=nIon)
     file=open('mix.inp','w') 
     file.write(s)
@@ -222,7 +226,7 @@ ewaldErrorTolerance = 0.0001
 constraints = HBonds
 rigidWater = True
 constraintTolerance = 0.000001
-box_vectors = np.diag([10.,10.,10.]) * nanometer
+box_vectors = np.diag([6.,6.,6.]) * nanometer
 
 #Integration Options
 dtsim = 0.001*picoseconds
