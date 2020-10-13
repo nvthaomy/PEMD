@@ -37,10 +37,10 @@ PAHmap = {
 
 pdbLib = '/home/mnguyen/bin/PEMD/monomer4assemble/'
 assemblePath = '/home/mnguyen/bin/assemble/Assemble.py'
-f = 1.0
-N = 24
+f = 0.0
+N = 12
 Pm = 0.44
-nChain = 30 # 1 if Pm = 1 (isotactic) or 0 (syndiotactic)
+nChain = 1 # 1 if Pm = 1 (isotactic) or 0 (syndiotactic)
 monName = 'AH'
 nameExt = '_a' #extension to chain name
 pattern = 'even' # 'even' or random' #random deprotonation
@@ -149,17 +149,20 @@ structure {cwd}/{molName}/{chainName}.pdb
         number 1
         resnumbers 2
         inside box 1 1 1 60 60 60
-        end structure
+        end structure\n""".format(cwd=cwd, molName = molName, chainName = chainName)
+    if f > 0.:
+        s += """ 
 structure /home/mnguyen/bin/PEMD/{ion}.pdb
         number {nIon}
         resnumbers 2
         inside box 1 1 1 60 60 60
-        end structure      
+        end structure""".format(ion=ion, nIon=nIon)
+    s += """ 
 structure /home/mnguyen/bin/PEMD/opc.pdb
         number 500
         resnumbers 2
         inside box 1 1 1 60 60 60
-        end structure""".format(cwd=cwd, molName = molName, chainName = chainName, ion=ion, nIon=nIon)
+        end structure"""
     file=open('mix.inp','w') 
     file.write(s)
     file.close()
@@ -337,6 +340,7 @@ print('Finish')
         time.sleep(1)
     
     # update resid so that the first resid is 1
+    SkipToNextFile = False
     FixResid = False
     file = open(coordfile,'r')
     lines = file.readlines()
@@ -350,7 +354,7 @@ print('Finish')
                     FixResid = True
                     newid = resid + 1
                     line = line[:22] + ' '*(4-len(str(newid))) + str(newid) + line[26:]
-                    print('-- Updating residue id for {} --'.format(fileName))
+                    print('... Updating residue id for {} ...'.format(coordfile))
                 elif resid!= 0:
                     SkipToNextFile = True
             elif linenum !=0 and FixResid:
