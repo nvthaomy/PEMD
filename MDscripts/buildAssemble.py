@@ -150,7 +150,7 @@ structure {cwd}/{molName}/{chainName}.pdb
         resnumbers 2
         inside box 1 1 1 60 60 60
         end structure\n""".format(cwd=cwd, molName = molName, chainName = chainName)
-    if f > 0.:
+    if nIon > 0.:
         s += """ 
 structure /home/mnguyen/bin/PEMD/{ion}.pdb
         number {nIon}
